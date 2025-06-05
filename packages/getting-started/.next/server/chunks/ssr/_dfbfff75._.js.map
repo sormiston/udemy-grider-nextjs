@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///Users/seanormiston/Learning/udemy/grider-nextjs/corp/src/app/page.tsx"],"sourcesContent":["import Image from \"next/image\";\nimport homeImg from \"/home.jpg\";\n\nexport default function LandingPage() {\n  return (\n    <>\n      <Image src={homeImg} alt=\"Car Factory\" />\n      <h1>Professional Cloud Hosting</h1>;\n    </>\n  );\n}\n"],"names":[],"mappings":";;;;AAAA;;;;;;;;;AAGe,SAAS;IACtB,qBACE;;0BACE,8OAAC,6HAAA,CAAA,UAAK;gBAAC,KAAK;gBAAS,KAAI;;;;;;0BACzB,8OAAC;0BAAG;;;;;;YAA+B;;;AAGzC","debugId":null}}]
-}

@@ -37,3 +37,10 @@
 # typescript
 **/*.tsbuildinfo
 **/next-env.d.ts
+
+# generated files
+**/generated/
+
+# local db
+**/prisma/*.db
+**/prisma/*.db-journal

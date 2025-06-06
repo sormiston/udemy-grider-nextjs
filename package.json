@@ -6,9 +6,13 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "pnpm -r run build",
-    "dev": "pnpm -r run dev",
-    "lint": "pnpm -r run lint"
+    "build": "pnpm run select-package -- build",
+    "dev": "pnpm run select-package -- dev",
+    "lint": "pnpm run select-package -- lint",
+    "select-package": "node ./scripts/select-package.js"
   },
-  "packageManager": "pnpm@9.15.0+sha1.8bfdb6d72b4d5fdf87d21d27f2bfbe2b21dd2629"
+  "packageManager": "pnpm@9.15.0+sha1.8bfdb6d72b4d5fdf87d21d27f2bfbe2b21dd2629",
+  "devDependencies": {
+    "inquirer": "^12.6.3"
+  }
 }

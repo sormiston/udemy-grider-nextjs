@@ -2,8 +2,6 @@
 
 const { execSync } = require("child_process");
 const { default: inquirer } = require("inquirer");
-const fs = require("fs");
-const path = require("path");
 
 const command = process.argv[3];
 
@@ -12,12 +10,7 @@ if (!command) {
   process.exit(1);
 }
 
-// Dynamically get package names from the "packages" directory
-const packagesDir = path.resolve(__dirname, "../packages");
-const packages = fs.readdirSync(packagesDir).filter((dir) => {
-  const packagePath = path.join(packagesDir, dir, "package.json");
-  return fs.existsSync(packagePath);
-});
+const packages = ["getting-started", "crud-server-actions"];
 
 (async () => {
   const { selectedPackage } = await inquirer.prompt([

@@ -8,6 +8,9 @@ type ViewSnippetPageProps = {
 };
 
 export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
+  // TEMPORARY: artificial delay to simulate loading
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const { id } = await props.params;
   let snippet;
 

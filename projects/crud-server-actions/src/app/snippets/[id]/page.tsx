@@ -9,12 +9,22 @@ type ViewSnippetPageProps = {
 
 export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
   const { id } = await props.params;
+  let snippet;
 
-  const snippet = await db.snippet.findUnique({
-    where: { id: parseInt(id) },
-  });
+  try {
+    snippet = await db.snippet.findUnique({
+      where: { id: parseInt(id) },
+    });
 
-  if (!snippet) {
+    if (!snippet) {
+      notFound();
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error fetching snippet:", error.message);
+    } else {
+      console.error("Error fetching snippet:", error);
+    }
     notFound();
   }
 

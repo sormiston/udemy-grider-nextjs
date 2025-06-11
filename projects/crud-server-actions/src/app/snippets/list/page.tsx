@@ -12,7 +12,7 @@ export default async function ListSnippetsPage() {
         <h3 className="text-3xl font-bold m-3">Snippets</h3>
         <Link
           href="/snippets/new"
-          className="flex min-w-16 justify-center border rounded m-3 px-3 py-1 hover:shadow-lg hover:font-semibold focus-visible:shadow-lg focus-visible:font-semibold transition"
+          className="m-3 pressable-white button"
         >
           New
         </Link>
@@ -22,7 +22,7 @@ export default async function ListSnippetsPage() {
           <li key={snippet.id}>
             <Link
               href={`/snippets/${snippet.id}`}
-              className="flex justify-between items-center p-2 border rounded group hover:shadow-lg focus-visible:shadow-lg transition"
+              className="flex justify-between items-center p-2 border rounded group pressable-white"
             >
               <h4 className="font-semibold">{snippet.title}</h4>
               <span className="group-hover:font-semibold transition-all">

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { db } from "@/db";
+import Link from "next/link";
 
 type ViewSnippetPageProps = {
   params: Promise<{
@@ -9,7 +10,7 @@ type ViewSnippetPageProps = {
 
 export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
   // TEMPORARY: artificial delay to simulate loading
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const { id } = await props.params;
   let snippet;
@@ -33,8 +34,16 @@ export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
 
   return (
     <>
-      <h3 className="font-bold m-3">{snippet.title}</h3>
-      <pre className="bg-gray-100 p-2 rounded m-3">{snippet.code}</pre>
+      <div className="flex justify-between items-center">
+        <h3 className="font-bold text-3xl m-3">{snippet.title}</h3>
+        <div className="flex gap-2">
+          <Link href={`/snippets/${snippet.id}/edit`} className="pressable-white button">
+            Edit
+          </Link>
+          <button className="pressable-white button">Delete</button>
+        </div>
+      </div>
+      <pre className="bg-gray-200 p-2 rounded-md m-3">{snippet.code}</pre>
     </>
   );
 }

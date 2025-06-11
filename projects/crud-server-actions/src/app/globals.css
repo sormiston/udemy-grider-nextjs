@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+.pressable-white {
+  @apply hover:shadow-lg focus-visible:shadow-lg active:bg-gray-100 active:shadow-sm transition;
+}
+
+.button {
+  @apply border rounded px-3 py-1 cursor-pointer;
+}

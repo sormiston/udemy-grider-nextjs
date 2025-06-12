@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 export default function NewSnippetPage() {
   async function handleCreateSnippet(formData: FormData) {
+    // TODO: refactor this as a route handler for true RESTfulness
     "use server";
     // This function will handle the form submission
     // and create a new snippet in the database.
@@ -11,14 +12,14 @@ export default function NewSnippetPage() {
     // Here you would typically call a database function to save the snippet.
 
     // For example:
-    const newSnippet = await db.snippet.create({
+    await db.snippet.create({
       data: { title, code },
     });
 
-    console.log("Creating snippet:", newSnippet);
     // Redirect or return a success message
     redirect("/");
   }
+
   return (
     <>
       <h3 className="font-bold m-3">Create Snippet</h3>

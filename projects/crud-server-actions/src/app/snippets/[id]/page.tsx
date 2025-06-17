@@ -52,8 +52,9 @@ export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
           </form>
         </div>
       </div>
-      {/* TODO: needs overflow handling */}
-      <pre className="bg-gray-200 p-2 rounded-md m-3">{snippet.code}</pre>
+      <pre className="bg-gray-200 overflow-scroll p-2 rounded-md m-3">
+        {snippet.code}
+      </pre>
     </>
   );
 }

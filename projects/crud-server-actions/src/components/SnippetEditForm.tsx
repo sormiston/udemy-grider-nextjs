@@ -5,7 +5,6 @@ import type { OnChange } from "@monaco-editor/react";
 import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import * as actions from "@/actions";
-import { redirect } from "next/navigation";
 
 type SnippetEditFormProps = {
   snippet: Snippet;
@@ -21,17 +20,10 @@ export default function SnippetEditForm({ snippet }: SnippetEditFormProps) {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent default form submission
 
-    const response = await actions.updateSnippet({
+    await actions.updateSnippet({
       id: snippet.id,
       code: code,
     });
-
-    if (response.status === 200) {
-      redirect(`/snippets/${snippet.id}`);
-    } else {
-      // TODO: improve error display UI
-      alert(`Error: ${response.message}`);
-    }
   };
 
   return (

@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { db } from "@/db";
+import * as actions from "@/actions";
+
 import Link from "next/link";
 
 type ViewSnippetPageProps = {
@@ -32,17 +34,25 @@ export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
     notFound();
   }
 
+  const deleteSnippetAction = actions.deleteSnippet.bind(null, parseInt(id));
+
   return (
     <>
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-3xl m-3">{snippet.title}</h3>
         <div className="flex gap-2">
-          <Link href={`/snippets/${snippet.id}/edit`} className="pressable-white button">
+          <Link
+            href={`/snippets/${snippet.id}/edit`}
+            className="pressable-white button"
+          >
             Edit
           </Link>
-          <button className="pressable-white button">Delete</button>
+          <form action={deleteSnippetAction}>
+            <button className="pressable-white button">Delete</button>
+          </form>
         </div>
       </div>
+      {/* TODO: needs overflow handling */}
       <pre className="bg-gray-200 p-2 rounded-md m-3">{snippet.code}</pre>
     </>
   );

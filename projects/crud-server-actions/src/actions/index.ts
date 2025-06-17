@@ -1,27 +1,29 @@
-// TODO: refactor this as a route handler for true RESTfulness
+// TODO: OPTIONAL: refactor to route handler patern for true RESTfulness? 
 "use server";
 
 import type { Snippet } from "@/generated/prisma";
+import { redirect } from "next/navigation";
 import { UpdateDTO } from "@/types";
 import { db } from "@/db";
 
 type SnippetUpdateDTO = UpdateDTO<Snippet>;
 
+// TODO: consolidate server actions; add error handling
 export async function updateSnippet(data: SnippetUpdateDTO) {
-  try {
-    const updated = await db.snippet.update({
-      where: {
-        id: data.id,
-      },
-      data,
-    });
+  await db.snippet.update({
+    where: {
+      id: data.id,
+    },
+    data,
+  });
 
-    // These are not true HTTP response objects!
-    // The HTTP request / response objects are not exposed to React Server Actions
-    // React Server Actions can only respond with serializable values
-    return { status: 200, message: "Snippet updated successfully", updated };
-  } catch (error) {
-    console.error(error);
-    return { status: 500, message: "Failed to update snippet", error };
-  }
+  redirect(`/snippets/${data.id}`);
+}
+
+export async function deleteSnippet(id: Snippet["id"]) {
+  await db.snippet.delete({
+    where: { id },
+  });
+
+  redirect("/snippets/list");
 }

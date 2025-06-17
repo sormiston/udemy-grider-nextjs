@@ -17,7 +17,7 @@ export default function NewSnippetPage() {
     });
 
     // Redirect or return a success message
-    redirect("/");
+    redirect("/snippets/list");
   }
 
   return (
@@ -35,7 +35,7 @@ export default function NewSnippetPage() {
             type="text"
             id="title"
             name="title"
-            className="w-full border border-gray-300 focus:border-gray-500"
+            className="w-full p-2 border border-gray-300 focus:border-gray-500"
           />
         </div>
         <div className="flex gap-4">

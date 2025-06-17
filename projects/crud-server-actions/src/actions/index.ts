@@ -1,4 +1,3 @@
-// TODO: OPTIONAL: refactor to route handler patern for true RESTfulness? 
 "use server";
 
 import type { Snippet } from "@/generated/prisma";
@@ -8,7 +7,6 @@ import { db } from "@/db";
 
 type SnippetUpdateDTO = UpdateDTO<Snippet>;
 
-// TODO: consolidate server actions; add error handling
 export async function updateSnippet(data: SnippetUpdateDTO) {
   await db.snippet.update({
     where: {

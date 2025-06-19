@@ -1,46 +1,63 @@
-import { db } from "@/db";
-import { redirect } from "next/navigation";
+"use client";
+import { useActionState } from "react";
+import * as actions from "@/actions";
+import type { NewSnippetErrorType, NewSnippetType } from "@/validators";
+import type { CreateFormState } from "@/actions";
+
+const initialFormState: CreateFormState = {
+  data: {
+    title: "",
+    code: "",
+  } as NewSnippetType,
+  errors: {} as NewSnippetErrorType,
+};
 
 export default function NewSnippetPage() {
-  async function handleCreateSnippet(formData: FormData) {
-    "use server";
-    const title = formData.get("title") as string;
-    const code = formData.get("code") as string;
-
-    await db.snippet.create({
-      data: { title, code },
-    });
-
-    redirect("/snippets/list");
-  }
+  const [formState, formAction] = useActionState(
+    actions.createSnippet,
+    initialFormState
+  );
 
   return (
     <>
       <h3 className="font-bold m-3">Create Snippet</h3>
-      <form
-        action={handleCreateSnippet}
-        className="flex flex-col gap-3 m-3 w-sm"
-      >
+      <form action={formAction} className="flex flex-col gap-3 m-3 sm:w-sm">
         <div className="flex gap-4">
           <label htmlFor="title" className="w-12">
             Title
           </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            className="w-full p-2 border border-gray-300 focus:border-gray-500"
-          />
+
+          <div className="flex-grow flex flex-col gap-0.5">
+            <input
+              type="text"
+              id="title"
+              name="title"
+              defaultValue={formState.data.title}
+              className="w-full p-2 border border-gray-300 focus:border-gray-500"
+            />
+            <span aria-live="polite" className="inline-block h-5 text-red-500 text-sm">
+              {formState.errors?.fieldErrors?.title &&
+                formState.errors.fieldErrors.title[0]}
+            </span>
+          </div>
         </div>
+
         <div className="flex gap-4">
           <label htmlFor="code" className="w-12">
             Code
           </label>
-          <textarea
-            id="code"
-            name="code"
-            className="w-full p-2 border border-gray-300 focus:border-gray-500"
-          ></textarea>
+          <div className="flex-grow flex flex-col gap-0.5">
+            <textarea
+              id="code"
+              name="code"
+              defaultValue={formState.data.code}
+              className="w-full p-2 border border-gray-300 focus:border-gray-500"
+            ></textarea>
+            <span aria-live="polite" className="inline-block h-5 text-red-500 text-sm">
+              {formState.errors?.fieldErrors?.code &&
+                formState.errors.fieldErrors.code[0]}
+            </span>
+          </div>
         </div>
         <button
           type="submit"

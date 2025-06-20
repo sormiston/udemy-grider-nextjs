@@ -13,7 +13,7 @@ const initialFormState: CreateFormState = {
 };
 
 export default function NewSnippetPage() {
-  const [formState, formAction] = useActionState(
+  const [formState, formAction, formPending] = useActionState(
     actions.createSnippet,
     initialFormState
   );
@@ -35,7 +35,10 @@ export default function NewSnippetPage() {
               defaultValue={formState.data.title}
               className="w-full p-2 border border-gray-300 focus:border-gray-500"
             />
-            <span aria-live="polite" className="inline-block h-5 text-red-500 text-sm">
+            <span
+              aria-live="polite"
+              className="inline-block h-5 text-red-500 text-sm"
+            >
               {formState.errors?.fieldErrors?.title &&
                 formState.errors.fieldErrors.title[0]}
             </span>
@@ -53,7 +56,10 @@ export default function NewSnippetPage() {
               defaultValue={formState.data.code}
               className="w-full p-2 border border-gray-300 focus:border-gray-500"
             ></textarea>
-            <span aria-live="polite" className="inline-block h-5 text-red-500 text-sm">
+            <span
+              aria-live="polite"
+              className="inline-block h-5 text-red-500 text-sm"
+            >
               {formState.errors?.fieldErrors?.code &&
                 formState.errors.fieldErrors.code[0]}
             </span>
@@ -61,7 +67,8 @@ export default function NewSnippetPage() {
         </div>
         <button
           type="submit"
-          className="w-fit p-2 border border-gray-300 active:border-gray-500"
+          className="w-fit p-2 border border-gray-300 active:border-gray-500 disabled:opacity-50 disabled:pointer-events-none"
+          disabled={formPending}
         >
           Submit
         </button>

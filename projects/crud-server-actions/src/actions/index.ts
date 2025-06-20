@@ -18,6 +18,9 @@ export async function createSnippet(
   _state: CreateFormState,
   formData: FormData
 ) {
+  // sleep to test form pending state
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const data: validators.NewSnippetType = {
     title: formData.get("title")?.toString() || "",
     code: formData.get("code")?.toString() || "",

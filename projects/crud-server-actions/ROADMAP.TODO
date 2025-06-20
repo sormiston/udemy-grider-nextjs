@@ -1,0 +1,20 @@
+# TEST-DRIVEN REFACTOR OF CRUD FORM ACTIONS FOR CONSISTENCY
+(See tag "server-side-validation-zod")
+
+1. SnippetEditForm and its related server action updateSnippet, and...
+2. NewSnippetPage and its related server action createSnippet...
+3. ...are divergent in implementation pattern
+
+Refactor SnippetEditForm / updateSnippet to agree with the established Create pattern
+    - Zod validation
+    - progressive enhancement enabled by form action prop
+    - useActionState for server-client state maintenance during validation
+    - error feedback UX
+
+------
+Establish TDD baseline:
+    ☐ Write integration test to anchor current functionality (form submission + prisma client call)
+    ☐ Augment integration test for new features (validation, error states)
+
+Refactor:
+    ☐ as above, mark when complete

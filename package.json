@@ -6,6 +6,7 @@
     "projects/*"
   ],
   "scripts": {
+    "start": "pnpm run select-project -- start",
     "build": "pnpm run select-project -- build",
     "dev": "pnpm run select-project -- dev",
     "lint": "pnpm run select-project -- lint",

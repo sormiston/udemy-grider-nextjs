@@ -16,6 +16,7 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/no-unused-vars": ["off", { varsIgnorePattern: "^_" }],
     },
+    ignorePatterns: ["src/generated/**"],
   }),
 ];
 

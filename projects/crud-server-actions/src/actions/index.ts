@@ -1,11 +1,13 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { z } from "zod/v4";
+
+import { db } from "@/db";
 import type { Snippet } from "@/generated/prisma";
 import * as validators from "@/validators";
-import { redirect } from "next/navigation";
 import { UpdateDTO } from "@/types";
-import { z } from "zod/v4";
-import { db } from "@/db";
 
 type SnippetUpdateDTO = UpdateDTO<Snippet>;
 
@@ -55,6 +57,7 @@ export async function createSnippet(
     }
   }
 
+  revalidatePath("/snippets/list");
   redirect("/snippets/list");
 }
 
@@ -74,5 +77,6 @@ export async function deleteSnippet(id: Snippet["id"]) {
     where: { id },
   });
 
+  revalidatePath("/snippets/list");
   redirect("/snippets/list");
 }

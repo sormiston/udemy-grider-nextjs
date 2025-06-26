@@ -25,8 +25,8 @@ export default async function SnippetEditPage(props: SnippetEditPageProps) {
 
   return (
     <>
-      <div>Editing snippet with title {snippet.title}</div>
-      <SnippetEditForm snippet={snippet}/>
+      <h2>Editing snippet with title: {snippet.title}</h2>
+      <SnippetEditForm snippet={snippet} />
     </>
   );
 }

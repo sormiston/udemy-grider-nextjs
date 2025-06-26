@@ -35,6 +35,7 @@ export default function SnippetEditForm({ snippet }: SnippetEditFormProps) {
         defaultValue={code}
         options={{ minimap: { enabled: false } }}
         onChange={handleEditorChange}
+        className="mb-3"
       />
       <form onSubmit={handleSubmit}>
         <button type="submit" className="button pressable-white">

@@ -69,6 +69,7 @@ export async function updateSnippet(data: SnippetUpdateDTO) {
     data,
   });
 
+  revalidatePath(`/snippets/${data.id}`);
   redirect(`/snippets/${data.id}`);
 }
 

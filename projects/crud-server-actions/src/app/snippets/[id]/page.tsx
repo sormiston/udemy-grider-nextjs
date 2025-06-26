@@ -10,6 +10,16 @@ type ViewSnippetPageProps = {
   }>;
 };
 
+// generate static params for dynamic route
+export async function generateStaticParams() {
+  const snippets = await db.snippet.findMany({
+    select: { id: true },
+  });
+  return snippets.map((snippet) => ({
+    id: snippet.id.toString(),
+  }));
+}
+
 export default async function ViewSnippetPage(props: ViewSnippetPageProps) {
   // TEMPORARY: artificial delay to simulate loading
   // await new Promise((resolve) => setTimeout(resolve, 2000));

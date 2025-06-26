@@ -11,14 +11,15 @@ type SnippetUpdateDTO = UpdateDTO<Snippet>;
 
 export type CreateFormState = {
   data: validators.NewSnippetType;
-  errors: validators.NewSnippetErrorType;
+  validationErrors: validators.NewSnippetErrorType;
+  serverError: { message: string };
 };
 
 export async function createSnippet(
   _state: CreateFormState,
   formData: FormData
 ) {
-  // sleep to test form pending state
+  // UNCOMMENT TO TEST: sleep to test form pending state
   // await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const data: validators.NewSnippetType = {
@@ -31,13 +32,28 @@ export async function createSnippet(
   if (!check.success) {
     return {
       data,
-      errors: z.flattenError(check.error),
+      validationErrors: z.flattenError(check.error),
+      serverError: { message: "" },
+      errorType: "validation" as const,
     };
   }
 
-  await db.snippet.create({
-    data: check.data,
-  });
+  try {
+    // UNCOMMENT TO TEST: server error at DB level
+    // throw new Error("Simulated server error");
+    await db.snippet.create({
+      data: check.data,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        data,
+        validationErrors: {} as validators.NewSnippetErrorType,
+        serverError: { message: error.message },
+        errorType: "server" as const,
+      };
+    }
+  }
 
   redirect("/snippets/list");
 }

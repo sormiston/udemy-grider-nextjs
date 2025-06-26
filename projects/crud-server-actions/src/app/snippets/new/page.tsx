@@ -9,9 +9,11 @@ const initialFormState: CreateFormState = {
     title: "",
     code: "",
   } as NewSnippetType,
-  errors: {} as NewSnippetErrorType,
+  validationErrors: {} as NewSnippetErrorType,
+  serverError: { message: "" },
 };
 
+// TODO: refactor this to use react-hook-form
 export default function NewSnippetPage() {
   const [formState, formAction, formPending] = useActionState(
     actions.createSnippet,
@@ -39,8 +41,7 @@ export default function NewSnippetPage() {
               aria-live="polite"
               className="inline-block h-5 text-red-500 text-sm"
             >
-              {formState.errors?.fieldErrors?.title &&
-                formState.errors.fieldErrors.title[0]}
+              {formState?.validationErrors?.fieldErrors?.title?.[0] ?? ""}
             </span>
           </div>
         </div>
@@ -60,8 +61,7 @@ export default function NewSnippetPage() {
               aria-live="polite"
               className="inline-block h-5 text-red-500 text-sm"
             >
-              {formState.errors?.fieldErrors?.code &&
-                formState.errors.fieldErrors.code[0]}
+              {formState?.validationErrors?.fieldErrors?.title?.[0] ?? ""}
             </span>
           </div>
         </div>
@@ -72,6 +72,11 @@ export default function NewSnippetPage() {
         >
           Submit
         </button>
+        {formState.serverError.message && (
+          <span className="text-red-500 text-sm">
+            {formState.serverError.message}
+          </span>
+        )}
       </form>
     </>
   );

@@ -10,7 +10,7 @@ if (!command) {
   process.exit(1);
 }
 
-const packages = ["getting-started", "crud-server-actions"];
+const packages = ["getting-started", "crud-server-actions", "discuss"];
 
 (async () => {
   const { selectedPackage } = await inquirer.prompt([

@@ -11,7 +11,7 @@ export type NewPostPayload = Pick<
   topicSlug: string;
 };
 
-export function PostCreate(payload: NewPostPayload) {
+export async function PostCreate(payload: NewPostPayload) {
   const { topicSlug } = payload;
   console.log('PostCreate action triggered with payload:', payload);
 

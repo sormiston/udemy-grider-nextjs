@@ -9,7 +9,7 @@ export type NewCommentPayload = Pick<
   'content' | 'postId' | 'parentId' | 'userId'
 > & { topicSlug: string };
 
-export function CommentCreate(payload: NewCommentPayload) {
+export async function CommentCreate(payload: NewCommentPayload) {
   const { topicSlug, postId } = payload;
   console.log('CommentCreate action triggered with payload:', payload);
   revalidatePath(paths.postView(topicSlug, postId));

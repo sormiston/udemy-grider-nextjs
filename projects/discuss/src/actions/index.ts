@@ -1,5 +1,3 @@
-'use server';
-
 export { githubSignIn } from './signIn';
 export { signOut } from './signOut';
 export { CommentCreate } from './commentCreate';

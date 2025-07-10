@@ -1,4 +1,5 @@
 import { Button } from '@nextui-org/react';
+import Profile from '@/components/profile';
 import * as actions from '@/actions';
 import * as auth from '@/auth';
 
@@ -17,6 +18,7 @@ export default async function Home() {
         </form>
       )}
       <pre>{JSON.stringify(session, null, 2)}</pre>
+      <Profile />
     </div>
   );
 }

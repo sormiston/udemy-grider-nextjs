@@ -106,6 +106,7 @@ export default function TopicCreateForm() {
               name="name"
               label="Name"
               labelPlacement="outside"
+              disabled={isPending}
               errorMessage={fieldErrorMessages.name}
               isInvalid={!!fieldErrorMessages.name}
               placeholder="your-topic-name"
@@ -114,12 +115,13 @@ export default function TopicCreateForm() {
               name="description"
               label="Description"
               labelPlacement="outside"
+              disabled={isPending}
               errorMessage={fieldErrorMessages.description}
               isInvalid={!!fieldErrorMessages.description}
               placeholder="Describe your topic"
             />
             <Button type="submit" isLoading={isPending}>
-              Submit
+              {!isPending && 'Submit'}
             </Button>
             {computedFormErrors.length > 0 && (
               <div className="text-red-500">

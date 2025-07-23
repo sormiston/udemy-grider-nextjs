@@ -44,17 +44,8 @@ export async function topicCreate(
   _prevState: TopicCreateActionState,
   payload: FormData
 ) {
-  const shouldReset = payload.get('reset') === 'true';
-
-  if (shouldReset) {
-    return {
-      errors: {
-        fieldErrors: {},
-        formErrors: [],
-        appStateErrors: [],
-      },
-    };
-  }
+  // Simulate a delay for demo of pending state
+  // await new Promise(resolve => setTimeout(resolve, 1000));
 
   const formData = Object.fromEntries(payload.entries()) as TopicCreatePayload;
   const user = await session();

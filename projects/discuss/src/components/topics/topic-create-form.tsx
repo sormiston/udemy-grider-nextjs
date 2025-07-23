@@ -10,7 +10,14 @@ import {
   Form,
 } from '@nextui-org/react';
 import type { TopicCreateActionState } from '@/actions/topicCreate';
-import { useActionState, startTransition, Fragment } from 'react';
+import {
+  useActionState,
+  startTransition,
+  Fragment,
+  useState,
+  useEffect,
+  useMemo,
+} from 'react';
 import * as actions from '@/actions';
 
 const initialState: TopicCreateActionState = {
@@ -22,12 +29,44 @@ const initialState: TopicCreateActionState = {
 };
 
 export default function TopicCreateForm() {
-  const [state, dispatch] = useActionState(actions.topicCreate, initialState);
-
-  const computedFormErrors = state.errors.formErrors.concat(
-    state.errors.appStateErrors
+  /* STATE */
+  /* Use action state to manage form submission and errors */
+  const [actionState, dispatch, isPending] = useActionState(
+    actions.topicCreate,
+    initialState
   );
 
+  /* 
+  Local state for managing form error feedback
+  This is local because we want to be able to reset it client-side
+  without needing to awaiting a server action call.
+  Otherwise, it should always be in sync with action state.
+  */
+  const [localState, setLocalState] = useState(initialState);
+  useEffect(() => {
+    // Update local state when action state changes
+    setLocalState(actionState);
+  }, [actionState]);
+
+  /* MEMOIZED VALUES */
+  const computedFormErrors = useMemo<string[]>(() => {
+    return localState.errors.formErrors.concat(
+      localState.errors.appStateErrors
+    );
+  }, [localState.errors.formErrors, localState.errors.appStateErrors]);
+
+  const fieldErrorMessages = useMemo(() => {
+    return {
+      name: localState.errors.fieldErrors?.name
+        ? formatErrorMessage(localState.errors.fieldErrors.name)
+        : undefined,
+      description:
+        localState.errors.fieldErrors?.description &&
+        formatErrorMessage(localState.errors.fieldErrors.description),
+    };
+  }, [localState.errors.fieldErrors]);
+
+  /* HANDLERS */
   function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     startTransition(() => {
@@ -35,14 +74,14 @@ export default function TopicCreateForm() {
     });
   }
 
-  function clearActionState() {
-    startTransition(() => {
-      const fd = new FormData();
-      fd.set('reset', 'true');
-      dispatch(fd);
-    });
+  function handlePopoverClose(isOpen: boolean) {
+    if (!isOpen) {
+      // Reset local state to clear errors and form data when the Popover is closed
+      setLocalState(initialState);
+    }
   }
 
+  /* HELPERS */
   function formatErrorMessage(errors: string[]) {
     return errors.length > 0
       ? errors.map((err, index) => (
@@ -55,7 +94,7 @@ export default function TopicCreateForm() {
   }
 
   return (
-    <Popover placement="left-start" onClose={clearActionState}>
+    <Popover placement="left-start" onOpenChange={handlePopoverClose}>
       <PopoverTrigger>
         <Button color="primary">Create a Topic</Button>
       </PopoverTrigger>
@@ -67,26 +106,21 @@ export default function TopicCreateForm() {
               name="name"
               label="Name"
               labelPlacement="outside"
-              errorMessage={
-                state.errors.fieldErrors?.name &&
-                formatErrorMessage(state.errors.fieldErrors.name)
-              }
-              isInvalid={!!state.errors.fieldErrors?.name}
+              errorMessage={fieldErrorMessages.name}
+              isInvalid={!!fieldErrorMessages.name}
               placeholder="your-topic-name"
             />
-
             <Textarea
               name="description"
               label="Description"
               labelPlacement="outside"
-              errorMessage={
-                state.errors.fieldErrors?.description &&
-                formatErrorMessage(state.errors.fieldErrors.description)
-              }
-              isInvalid={!!state.errors.fieldErrors?.description}
+              errorMessage={fieldErrorMessages.description}
+              isInvalid={!!fieldErrorMessages.description}
               placeholder="Describe your topic"
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" isLoading={isPending}>
+              Submit
+            </Button>
             {computedFormErrors.length > 0 && (
               <div className="text-red-500">
                 <p>{computedFormErrors.join(', ')}</p>

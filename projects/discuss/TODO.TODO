@@ -1,1 +1,13 @@
 ☐ Refactor next-auth to better-auth.  next-auth is 🤯
+
+☐ CREATE TOPIC flow:
+    ☐ SHOULD HAVE features:
+        ☐ Avoid "loading blink": show loading state only if submission takes more than X ms
+          ☐ if it takes less than X ms, show the form with no loading state
+          ☐ if it takes more than X ms, show a loading spinner
+            ☐  if the loading spinner is shown, disable form inputs and keep spinner visible for at least X ms, so it doesn't blink out too fast
+    ☐ Testing:
+        ☐ Unit testing for actions/topicCreate.ts ?
+        ☐ Unit testing of topic-create-form.ts?
+        ☐ integration tests between the two?
+        ☐ E2E test with puppeteer or similar?

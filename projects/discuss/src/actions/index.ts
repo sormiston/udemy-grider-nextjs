@@ -1,5 +1,5 @@
-export { githubSignIn } from './signIn';
-export { signOut } from './signOut';
-export { commentCreate } from './commentCreate';
-export { postCreate } from './postCreate';
-export { topicCreate } from './topicCreate';
+export { githubSignIn } from './sign-in';
+export { signOut } from './sign-out';
+export { commentCreate } from './comment-create';
+export { postCreate } from './post-create';
+export { topicCreate } from './topic-create';

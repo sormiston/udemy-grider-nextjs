@@ -13,7 +13,6 @@ import * as actions from '@/actions';
 export default function HeaderAuth() {
   const session = useSession();
   const { data: userSession, status: authStatus } = session;
-  // make a console log to determine if session has changed and will trigger a re-render
 
   let authContent: React.ReactNode;
   if (authStatus === 'authenticated' && userSession?.user) {

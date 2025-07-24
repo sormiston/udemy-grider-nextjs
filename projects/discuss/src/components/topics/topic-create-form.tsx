@@ -9,7 +9,7 @@ import {
   PopoverContent,
   Form,
 } from '@nextui-org/react';
-import type { TopicCreateActionState } from '@/actions/topicCreate';
+import type { TopicCreateActionState } from '@/actions/topic-create';
 import {
   useActionState,
   startTransition,

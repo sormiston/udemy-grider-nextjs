@@ -5,7 +5,7 @@ import { db } from '@/db';
 
 export const {
   handlers,
-  auth: session,
+  auth,
   signIn,
   signOut,
 } = NextAuth({

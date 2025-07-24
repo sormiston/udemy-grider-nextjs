@@ -1,5 +1,5 @@
 'use server';
-import { session } from '@/auth';
+import { auth } from '@/auth';
 import { z } from 'zod';
 import { db } from '@/db';
 import paths from '@/paths';
@@ -47,7 +47,7 @@ export async function postCreate(
   const formEntries = Object.fromEntries(
     formData.entries()
   ) as PostCreateFormData;
-  const user = await session();
+  const user = await auth();
 
   if (!user) {
     return {

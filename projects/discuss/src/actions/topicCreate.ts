@@ -1,5 +1,5 @@
 'use server';
-import { session } from '@/auth';
+import { auth } from '@/auth';
 import { z } from 'zod';
 import { db } from '@/db';
 import paths from '@/paths';
@@ -48,7 +48,7 @@ export async function topicCreate(
   // await new Promise(resolve => setTimeout(resolve, 1000));
 
   const formData = Object.fromEntries(payload.entries()) as TopicCreatePayload;
-  const user = await session();
+  const user = await auth();
 
   if (!user) {
     return {

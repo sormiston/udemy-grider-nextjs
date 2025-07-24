@@ -11,6 +11,9 @@ importers:
       inquirer:
         specifier: ^12.6.3
         version: 12.6.3(@types/node@20.17.58)
+      typescript:
+        specifier: ^5
+        version: 5.8.3
 
   projects/crud-server-actions:
     dependencies:

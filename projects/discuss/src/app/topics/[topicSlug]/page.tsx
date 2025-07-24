@@ -4,22 +4,22 @@ import { fetchPostsByTopicSlug } from '@/db/queries/posts';
 
 type TopicPageProps = {
   params: Promise<{
-    slug: string;
+    topicSlug: string;
   }>;
 };
 
 export default async function TopicViewPage({ params }: TopicPageProps) {
-  const { slug } = await params;
-  const postsBySlug = fetchPostsByTopicSlug.bind(null, slug);
+  const { topicSlug } = await params;
+  const postsBySlug = fetchPostsByTopicSlug.bind(null, topicSlug);
 
   return (
     <div className="grid grid-cols-4 gap-4 p-4">
       <div className="col-span-3">
-        <h1 className="text-2xl font-bold mb-2">{slug}</h1>
+        <h1 className="text-2xl font-bold mb-2">{topicSlug}</h1>
         <PostList fetchData={postsBySlug} />
       </div>
       <div className="py-3 px-2">
-        <PostCreateForm topicSlug={slug} />
+        <PostCreateForm topicSlug={topicSlug} />
       </div>
     </div>
   );

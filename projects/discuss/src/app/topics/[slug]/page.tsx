@@ -18,7 +18,7 @@ export default async function TopicViewPage({ params }: TopicPageProps) {
         <h1 className="text-2xl font-bold mb-2">{slug}</h1>
         <PostList fetchData={postsBySlug} />
       </div>
-      <div className="border shadow py-3 px-2">
+      <div className="py-3 px-2">
         <PostCreateForm topicSlug={slug} />
       </div>
     </div>

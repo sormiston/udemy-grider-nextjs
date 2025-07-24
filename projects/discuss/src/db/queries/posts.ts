@@ -1,13 +1,13 @@
 import type { Post } from '@/generated/prisma';
 import { db } from '@/db';
 
-export type PostWithData = Post & {
+export type PostListItem = Post & {
   topic: { slug: string };
   user: { name: string | null };
   _count: { comments: number };
 };
 
-export function fetchPostsByTopicSlug(slug: string): Promise<PostWithData[]> {
+export function fetchPostsByTopicSlug(slug: string): Promise<PostListItem[]> {
   return db.post.findMany({
     where: {
       topic: { slug },

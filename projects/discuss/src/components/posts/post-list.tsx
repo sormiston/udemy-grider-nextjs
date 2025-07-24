@@ -1,9 +1,9 @@
-import type { PostWithData } from '@/db/queries/posts';
+import type { PostListItem } from '@/db/queries/posts';
 import Link from 'next/link';
 import paths from '@/paths';
 
 type PostListProps = {
-  fetchData: () => Promise<PostWithData[]>;
+  fetchData: () => Promise<PostListItem[]>;
 };
 
 export default async function PostList({ fetchData }: PostListProps) {

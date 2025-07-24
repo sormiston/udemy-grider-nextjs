@@ -77,6 +77,7 @@ export async function topicCreate(
 
   let newTopicSlug;
   try {
+    // TODO: add case handling for where topic already exists
     const newTopic = await db.topic.create({
       data: {
         slug: validated.data.name,

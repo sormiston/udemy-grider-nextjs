@@ -47,7 +47,10 @@ export async function topicCreate(
   // Simulate a delay for demo of pending state
   // await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const formData = Object.fromEntries(payload.entries()) as TopicCreatePayload;
+  const formData = {
+    name: payload.get('name') as string,
+    description: payload.get('description') as string,
+  };
   const user = await auth();
 
   if (!user) {

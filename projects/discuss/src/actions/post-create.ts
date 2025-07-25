@@ -13,7 +13,7 @@ const createPostSchema = z.object({
     .max(100, 'Title must be less than 100 characters'),
   content: z
     .string()
-    .min(1, 'Content may not be empty')
+    .min(10, 'Content is required and must be at least 10 characters long')
     .max(2000, 'Content must be less than 2000 characters long'),
 });
 
@@ -43,12 +43,7 @@ export async function postCreate(
 ): Promise<PostCreateActionState> {
   // Simulate a delay for demo of pending state
   // await new Promise(resolve => setTimeout(resolve, 1000));
-
-  const formEntries = Object.fromEntries(
-    formData.entries()
-  ) as PostCreateFormData;
   const user = await auth();
-
   if (!user) {
     return {
       errors: {
@@ -59,8 +54,12 @@ export async function postCreate(
     };
   }
 
-  const validated = createPostSchema.safeParse(formEntries);
+  const formEntries = {
+    title: formData.get('title') as string,
+    content: formData.get('content') as string,
+  };
 
+  const validated = createPostSchema.safeParse(formEntries);
   if (!validated.success) {
     return {
       errors: {

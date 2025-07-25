@@ -1,87 +1,115 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { auth } from "@/auth";
-import { db } from "@/db";
-import paths from "@/paths";
+import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
+import { auth } from '@/auth';
+import { db } from '@/db';
+import paths from '@/paths';
 
 const createCommentSchema = z.object({
-  content: z.string().min(3),
+  content: z.string().min(2, 'Comment must be at least 2 characters'),
 });
 
-interface CreateCommentFormState {
-  errors: {
-    content?: string[];
-    _form?: string[];
-  };
-  success?: boolean;
-}
+type CommentCreateFormData = z.infer<typeof createCommentSchema>;
+
+type CommentCreateFieldErrors = Pick<
+  ReturnType<typeof z.flattenError<CommentCreateFormData>>,
+  'fieldErrors'
+>;
+
+type CommentCreateFormErrors = Pick<
+  ReturnType<typeof z.flattenError<CommentCreateFormData>>,
+  'formErrors'
+>;
+
+type CommentCreateErrors = CommentCreateFieldErrors &
+  CommentCreateFormErrors & { appStateErrors: string[] };
+
+export type CommentCreateActionState = {
+  success: boolean;
+  errors: CommentCreateErrors;
+};
 
 export async function commentCreate(
-  { postId, parentId }: { postId: string; parentId?: string },
-  formState: CreateCommentFormState,
-  formData: FormData
-): Promise<CreateCommentFormState> {
-  const result = createCommentSchema.safeParse({
-    content: formData.get("content"),
-  });
-
-  if (!result.success) {
+  _prevState: CommentCreateActionState,
+  postId: string,
+  formData: FormData,
+  parentId?: string
+): Promise<CommentCreateActionState> {
+  const user = await auth();
+  if (!user) {
     return {
-      errors: result.error.flatten().fieldErrors,
+      success: false,
+      errors: {
+        fieldErrors: {},
+        formErrors: [] as string[],
+        appStateErrors: ['You must be signed in to do this'],
+      },
     };
   }
 
-  const session = await auth();
-  if (!session || !session.user || !session.user.id) {
+  const formEntries = {
+    content: formData.get('content') as string,
+  };
+  const validated = createCommentSchema.safeParse(formEntries);
+  if (!validated.success) {
     return {
+      success: false,
       errors: {
-        _form: ["You must sign in to do this."],
+        fieldErrors: z.flattenError(validated.error).fieldErrors,
+        formErrors: z.flattenError(validated.error).formErrors.length
+          ? ['Something went wrong, please try again.']
+          : [],
+        appStateErrors: [] as string[],
       },
     };
   }
 
   try {
+    const userId = user.user?.id;
+    if (!userId) {
+      throw new Error('No user found on authenticated session');
+    }
+  
     await db.comment.create({
       data: {
-        content: result.data.content,
+        content: validated.data.content,
         postId: postId,
         parentId: parentId,
-        userId: session.user.id,
+        userId: userId,
       },
     });
-  } catch (err) {
-    if (err instanceof Error) {
-      return {
-        errors: {
-          _form: [err.message],
-        },
-      };
-    } else {
-      return {
-        errors: {
-          _form: ["Something went wrong..."],
-        },
-      };
+
+    // Find topic for revalidation
+    const topic = await db.topic.findFirst({
+      where: { posts: { some: { id: postId } } },
+    });
+    if (!topic) {
+      throw new Error('Failed to revalidate topic');
     }
-  }
-
-  const topic = await db.topic.findFirst({
-    where: { posts: { some: { id: postId } } },
-  });
-
-  if (!topic) {
+    revalidatePath(paths.postView(topic.slug, postId));
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error creating post:', error.message);
+    } else {
+      console.error('Unknown error creating post:', error);
+    }
     return {
+      success: false,
       errors: {
-        _form: ["Failed to revalidate topic"],
+        fieldErrors: {},
+        formErrors: [] as string[],
+        appStateErrors: ['Something went wrong, please try again.'],
       },
     };
   }
 
-  revalidatePath(paths.postView(topic.slug, postId));
   return {
-    errors: {},
     success: true,
+    errors: {
+      fieldErrors: {},
+      formErrors: [],
+      appStateErrors: [],
+    },
   };
 }

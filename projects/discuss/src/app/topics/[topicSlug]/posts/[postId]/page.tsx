@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import PostView from '@/components/posts/post-view';
+import CommentCreateForm from '@/components/comments/comment-create-form';
 import { fetchPostById } from '@/db/queries/posts';
 import paths from '@/paths';
 
@@ -17,6 +18,7 @@ export default async function PostViewPage({ params }: PostViewPageProps) {
     <div>
       <Link href={paths.topicView(topicSlug)}>{`< Back to ${topicSlug}`}</Link>
       <PostView query={fetchPost} />
+      <CommentCreateForm postId={postId} />
     </div>
   );
 }

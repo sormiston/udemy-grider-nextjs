@@ -7,8 +7,10 @@ export type PostListItem = Post & {
   _count: { comments: number };
 };
 
-export function fetchPostsByTopicSlug(slug: string): Promise<PostListItem[]> {
-  return db.post.findMany({
+export async function fetchPostsByTopicSlug(
+  slug: string
+): Promise<PostListItem[]> {
+  const query = await db.post.findMany({
     where: {
       topic: { slug },
     },
@@ -18,4 +20,22 @@ export function fetchPostsByTopicSlug(slug: string): Promise<PostListItem[]> {
       _count: { select: { comments: true } },
     },
   });
+
+  return query;
+}
+
+export type FetchPostByIdResult = ReturnType<typeof fetchPostById>;
+
+export async function fetchPostById(postId: string) {
+  const query = await db.post.findUnique({
+    where: {
+      id: postId,
+    },
+    select: {
+      title: true,
+      content: true,
+    },
+  });
+
+  return query;
 }

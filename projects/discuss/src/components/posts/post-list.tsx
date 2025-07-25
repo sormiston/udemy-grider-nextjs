@@ -3,11 +3,11 @@ import Link from 'next/link';
 import paths from '@/paths';
 
 type PostListProps = {
-  fetchData: () => Promise<PostListItem[]>;
+  query: () => Promise<PostListItem[]>;
 };
 
-export default async function PostList({ fetchData }: PostListProps) {
-  const posts = await fetchData();
+export default async function PostList({ query }: PostListProps) {
+  const posts = await query();
   const renderedPosts = posts.map(post => {
     const topicSlug = post.topic.slug;
 

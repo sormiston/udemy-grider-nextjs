@@ -10,13 +10,13 @@ type TopicPageProps = {
 
 export default async function TopicViewPage({ params }: TopicPageProps) {
   const { topicSlug } = await params;
-  const postsBySlug = fetchPostsByTopicSlug.bind(null, topicSlug);
+  const fetchPosts = () => fetchPostsByTopicSlug(topicSlug);
 
   return (
     <div className="grid grid-cols-4 gap-4 p-4">
       <div className="col-span-3">
         <h1 className="text-2xl font-bold mb-2">{topicSlug}</h1>
-        <PostList fetchData={postsBySlug} />
+        <PostList query={fetchPosts} />
       </div>
       <div className="py-3 px-2">
         <PostCreateForm topicSlug={topicSlug} />

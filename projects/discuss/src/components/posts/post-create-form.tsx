@@ -132,7 +132,7 @@ export default function PostCreateForm({ topicSlug }: { topicSlug: string }) {
               {!isPending && 'Submit'}
             </Button>
             {computedFormErrors.length > 0 && (
-              <div className="text-red-500">
+              <div className="p-2 bg-red-200 border rounded border-red-400">
                 <p>{computedFormErrors.join(', ')}</p>
               </div>
             )}

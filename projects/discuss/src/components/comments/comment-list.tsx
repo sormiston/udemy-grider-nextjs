@@ -1,12 +1,12 @@
 import CommentListItem from '@/components/comments/comment-list-item';
-import type { CommentWithAuthor } from '@/db/queries/comments';
+import { fetchCommentsByPostId } from '@/db/queries/comments';
 
 type CommentListProps = {
-  query: () => Promise<CommentWithAuthor[]>;
+  postId: string;
 };
 
-export default async function CommentList({ query }: CommentListProps) {
-  const comments = await query();
+export default async function CommentList({ postId }: CommentListProps) {
+  const comments = await fetchCommentsByPostId(postId);
   const topLevelComments = comments.filter(
     comment => comment.parentId === null
   );
@@ -15,7 +15,7 @@ export default async function CommentList({ query }: CommentListProps) {
       <CommentListItem
         key={comment.id}
         commentId={comment.id}
-        comments={comments}
+        postId={postId}
       />
     );
   });

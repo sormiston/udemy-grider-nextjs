@@ -23,7 +23,7 @@ export default async function PostViewPage({ params }: PostViewPageProps) {
       <Link href={paths.topicView(topicSlug)}>{`< Back to ${topicSlug}`}</Link>
       <PostView query={fetchPost} />
       <CommentCreateForm postId={postId} startOpen />
-      <CommentList query={fetchComments} />
+      <CommentList postId={postId} />
     </div>
   );
 }

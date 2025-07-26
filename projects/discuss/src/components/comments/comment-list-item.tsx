@@ -2,7 +2,7 @@ import Image from 'next/image';
 import CommentCreateForm from '@/components/comments/comment-create-form';
 import type { CommentWithAuthor } from '@/db/queries/comments';
 
-type CommentShowProps = {
+type CommentListItemProps = {
   commentId: string;
   comments: CommentWithAuthor[];
 };
@@ -10,7 +10,7 @@ type CommentShowProps = {
 export default function CommentListItem({
   commentId,
   comments,
-}: CommentShowProps) {
+}: CommentListItemProps) {
   const comment = comments.find(c => c.id === commentId);
 
   if (!comment) {
@@ -20,7 +20,11 @@ export default function CommentListItem({
   const children = comments.filter(c => c.parentId === commentId);
   const renderedChildren = children.map(child => {
     return (
-      <CommentListItem key={child.id} commentId={child.id} comments={comments} />
+      <CommentListItem
+        key={child.id}
+        commentId={child.id}
+        comments={comments}
+      />
     );
   });
 

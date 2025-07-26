@@ -109,6 +109,7 @@ export default function CommentCreateForm({
           placeholder="Enter your comment"
           isInvalid={!!fieldErrorMessages.content}
           errorMessage={fieldErrorMessages.content}
+          classNames={{ input: 'min-h-[60px]' }}
         />
         {computedFormErrors.length > 0 && (
           <div className="p-2 bg-red-200 border rounded border-red-400">

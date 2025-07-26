@@ -1,6 +1,6 @@
-☐ Refactor next-auth to better-auth.  next-auth is 🤯
+☐ Refactor next-auth to better-auth?.  next-auth is 🤯
 
-☐ CREATE TOPIC flow:
+☐ FORM FLOWS / create topic, create post, create comment, etc:
     ☐ SHOULD HAVE features:
         ☐ Avoid "loading blink": show loading state only if submission takes more than X ms
           ☐ if it takes less than X ms, show the form with no loading state
@@ -11,3 +11,8 @@
         ☐ Unit testing of topic-create-form.ts?
         ☐ integration tests between the two?
         ☐ E2E test with puppeteer or similar?
+    ☐ Refactor to react-hook-form
+      ☐ study and consider: what problems does it solve?
+      ☐ how close can we get to the ideal of "no re-renders" while having perks like real-time or NEARLY real-time validation?
+      ☐ how well does it play with useActionState?  Does it supersede its use case?
+

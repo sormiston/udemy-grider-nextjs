@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
+import paths from '@/paths';
 import PostView from '@/components/posts/post-view';
+import PostViewSkeleton from '@/components/posts/post-view-skeleton';
 import CommentCreateForm from '@/components/comments/comment-create-form';
 import CommentList from '@/components/comments/comment-list';
 import { fetchPostById } from '@/db/queries/posts';
 import { fetchCommentsByPostId } from '@/db/queries/comments';
-import paths from '@/paths';
 
 type PostViewPageProps = {
   params: Promise<{
@@ -21,7 +23,9 @@ export default async function PostViewPage({ params }: PostViewPageProps) {
   return (
     <div>
       <Link href={paths.topicView(topicSlug)}>{`< Back to ${topicSlug}`}</Link>
-      <PostView query={fetchPost} />
+      <Suspense fallback={<PostViewSkeleton />}>
+        <PostView query={fetchPost} />
+      </Suspense>
       <CommentCreateForm postId={postId} startOpen />
       <CommentList query={fetchComments} />
     </div>

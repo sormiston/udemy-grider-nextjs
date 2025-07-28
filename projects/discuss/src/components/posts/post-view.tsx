@@ -4,6 +4,8 @@ type PostShowProps = {
 };
 
 export default async function PostShow({ query }: PostShowProps) {
+  // introduce delay to demo content streaming / Suspense API
+  await new Promise(resolve => setTimeout(resolve, 500));
   const post = await query();
 
   if (!post) {

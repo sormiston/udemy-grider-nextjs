@@ -1,4 +1,7 @@
-☐ Refactor next-auth to better-auth?.  next-auth is 🤯
+
+☐ Investigate duped calls to /api/auth/session.  Eliminate redundancies.
+  ☐ on Links
+  ☐ on redirect of search-input
 
 ☐ FORM FLOWS / create topic, create post, create comment, etc:
     ☐ SHOULD HAVE features:

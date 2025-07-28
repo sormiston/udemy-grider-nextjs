@@ -3,6 +3,8 @@
   ☐ on Links
   ☐ on redirect of search-input
 
+☐ Add some "pending" UI to header-auth
+
 ☐ FORM FLOWS / create topic, create post, create comment, etc:
     ☐ SHOULD HAVE features:
         ☐ Avoid "loading blink": show loading state only if submission takes more than X ms

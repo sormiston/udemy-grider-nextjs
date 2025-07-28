@@ -17,6 +17,14 @@ type CommentCreateFormProps = {
   parentId?: string;
   startOpen?: boolean;
 };
+const initialState: CommentCreateActionState = {
+  success: false,
+  errors: {
+    fieldErrors: {},
+    formErrors: [],
+    appStateErrors: [],
+  },
+};
 
 export default function CommentCreateForm({
   postId,
@@ -24,14 +32,7 @@ export default function CommentCreateForm({
   startOpen,
 }: CommentCreateFormProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(startOpen);
-  const initialState: CommentCreateActionState = {
-    success: false,
-    errors: {
-      fieldErrors: {},
-      formErrors: [],
-      appStateErrors: [],
-    },
-  };
+
   const [actionState, dispatch, isPending] = useActionState(
     (state: CommentCreateActionState, formData: FormData) =>
       actions.commentCreate(state, postId, formData, parentId),

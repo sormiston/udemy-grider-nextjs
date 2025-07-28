@@ -39,3 +39,21 @@ export async function fetchPostById(postId: string) {
 
   return query;
 }
+
+export async function fetchTopPosts(limit: number): Promise<PostListItem[]> {
+  const query = await db.post.findMany({
+    orderBy: {
+      comments: {
+        _count: 'desc',
+      },
+    },
+    take: limit,
+    include: {
+      topic: { select: { slug: true } },
+      user: { select: { name: true } },
+      _count: { select: { comments: true } },
+    },
+  });
+
+  return query;
+}

@@ -8,8 +8,14 @@ export default function SearchInput() {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('term') || '';
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    actions.searchFormRedirect(formData);
+  };
+
   return (
-    <form action={actions.searchFormRedirect}>
+    <form onSubmit={handleSubmit}>
       <Input name="term" defaultValue={searchTerm} />
     </form>
   );

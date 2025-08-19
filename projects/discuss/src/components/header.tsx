@@ -4,13 +4,18 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  Button,
 } from '@nextui-org/react';
-import HeaderAuth from '@/components/header-auth';
+import { auth } from '@/auth';
+import * as actions from '@/actions';
+import HeaderAuthClient from '@/components/header-auth-client';
 import SearchInput from '@/components/search-input';
 import paths from '@/paths';
-import { Suspense } from 'react';
 
 export default async function Header() {
+  const session = await auth();
+  const user = session?.user;
+
   return (
     <Navbar className="shadow mb-6">
       <NavbarBrand>
@@ -20,13 +25,30 @@ export default async function Header() {
       </NavbarBrand>
       <NavbarContent justify="center">
         <NavbarItem>
-          <Suspense>
-            <SearchInput />
-          </Suspense>
+          <SearchInput />
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <HeaderAuth />
+        {user ? (
+          <HeaderAuthClient user={user} />
+        ) : (
+          <>
+            <NavbarItem>
+              <form action={actions.githubSignIn}>
+                <Button type="submit" color="secondary" variant="bordered">
+                  Sign In
+                </Button>
+              </form>
+            </NavbarItem>
+            <NavbarItem>
+              <form action={actions.githubSignIn}>
+                <Button type="submit" color="primary" variant="flat">
+                  Sign Up
+                </Button>
+              </form>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
     </Navbar>
   );
